@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Co&middot;Counsel — Legal Memo Reading Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --serif:'Cormorant Garamond',serif;
+  --sans:'DM Sans',sans-serif;
+  --ink:#0f0f0f; --ink2:#555; --ink3:#999;
+  --line:#e8e8e8; --line2:#d0d0d0;
+  --surface:#f7f6f3; --white:#ffffff;
+  --amber-bg:#faeeda; --amber-border:#ef9f27; --amber-text:#633806; --amber-dark:#412402;
+  --green-bg:#eaf3de; --green-border:#639922; --green-text:#3b6d11;
+  --del-bg:#fde8e8; --del-text:#c0392b;
+  --hl-yellow:#fef08a; --hl-green:#bbf7d0; --hl-pink:#fbcfe8;
+  --agent-border:#e2e8f0; --agent-active-bg:#0f0f0f; --agent-active-text:#fff;
+}
+html,body{height:100%;font-family:var(--sans);color:var(--ink);background:var(--white);}
+
+.screen{display:none;width:100%;min-height:100vh;}
+.screen.active{display:flex;}
+
+/* ── SCREEN 1 ── */
+#s1{flex-direction:column;align-items:center;padding:6rem 1rem 2rem;}
+.s1-logo{display:block;height:52px;width:auto;margin-bottom:3rem;margin-top:1rem;}
+.s1-box{width:100%;max-width:600px;background:var(--surface);border-radius:14px;padding:1.1rem 1.1rem 0.85rem;}
+.s1-textarea{width:100%;background:transparent;border:none;outline:none;font-size:15px;font-family:var(--sans);color:var(--ink);resize:none;min-height:120px;line-height:1.7;}
+.s1-textarea::placeholder{color:var(--ink3);}
+.s1-actions{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--line);margin-top:6px;}
+.s1-attach{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);cursor:pointer;padding:6px 12px;border-radius:8px;border:1px solid var(--line2);background:var(--white);font-family:var(--sans);transition:all 0.12s;}
+.s1-attach:hover{border-color:var(--ink3);}
+.s1-begin{background:var(--ink);color:var(--white);border:none;border-radius:8px;padding:0 18px;height:34px;font-size:13px;font-weight:500;font-family:var(--sans);cursor:pointer;opacity:0.3;transition:opacity 0.15s;display:flex;align-items:center;gap:7px;}
+.s1-begin.ready{opacity:1;}
+.s1-pills-wrap{width:100%;max-width:600px;margin-top:1.75rem;}
+.s1-pill-lbl{font-size:11px;color:var(--ink3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:9px;}
+.s1-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.4rem;}
+.pill{font-size:13px;padding:5px 15px;border-radius:99px;border:1px solid var(--line2);color:var(--ink2);cursor:pointer;background:var(--white);transition:all 0.12s;font-family:var(--sans);}
+.pill:hover{border-color:var(--ink3);color:var(--ink);}
+.pill.on{background:var(--ink);border-color:var(--ink);color:var(--white);}
+.s1-privacy{margin-top:1.75rem;font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:6px;}
+
+/* ── SCREEN 2 & 3 TOPBAR ── */
+#s2, #s3 {flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--line);background:var(--white);flex-shrink:0;}
+.tl{display:flex;align-items:center;gap:12px;}
+.t-logo{display:block;height:24px;width:auto;}
+.t-matter{font-size:13px;color:var(--ink);font-weight:500;outline:none;border-bottom:1px dashed transparent;transition:border 0.2s;}
+.t-matter:hover, .t-matter:focus{border-bottom:1px dashed var(--ink3);}
+.tr{display:flex;align-items:center;gap:12px;}
+.ann-btn{display:flex;align-items:center;gap:5px;font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid var(--line2);color:var(--ink2);cursor:pointer;background:var(--white);font-family:var(--sans);transition:all 0.12s;}
+.ann-btn.on{background:var(--ink);border-color:var(--ink);color:var(--white);}
+.prog-container{display:flex;align-items:center;gap:8px;}
+.prog-lbl{font-size:11px;color:var(--ink3);font-weight:500;}
+.prog-bar{width:90px;height:4px;background:var(--line);border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--ink);border-radius:99px;transition:width 0.35s;}
+
+/* Annotate Toolbar */
+.ann-toolbar {display:none; align-items:center; gap:6px; background:var(--white); padding: 4px 8px; border-radius: 99px; border: 1px solid var(--line2);}
+.ann-color {width:16px; height:16px; border-radius:50%; cursor:pointer; border:1px solid rgba(0,0,0,0.1);}
+.ann-color.active {border:2px solid var(--ink);}
+
+.body2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;height:calc(100vh - 51px); overflow:hidden;}
+.left2{border-right:1px solid var(--line);padding:1.25rem;overflow-y:auto;background:var(--white);}
+.right2{padding:1.25rem;display:flex;flex-direction:column;background:var(--white);overflow:hidden;}
+
+/* Left Side Layout */
+.sec-nav{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.sp{font-size:11px;padding:3px 11px;border-radius:99px;border:1px solid var(--line);color:var(--ink3);cursor:pointer;background:transparent;font-family:var(--sans);transition:all 0.12s;}
+.sp.active{border-color:var(--ink);color:var(--ink);background:var(--surface);font-weight:500;}
+.sp.done{background:var(--surface);color:var(--ink3);}
+.sp.done::after{content:' ✓';}
+.sec-lbl{font-size:11px;font-weight:500;color:var(--ink3);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:12px;}
+.para{padding:10px 12px;border-radius:10px;margin-bottom:6px;border:1px solid transparent;transition:all 0.1s;}
+.para.highlighted {background: var(--amber-bg); border-color: var(--amber-border);}
+.para.highlighted .pnum {color: var(--amber-text);}
+.pnum{font-size:11px;color:var(--ink3);margin-bottom:3px;font-weight:500; transition:color 0.1s;}
+.ptxt{font-size:13px;color:var(--ink);line-height:1.65;}
+.ptxt ::selection { background: transparent; }
+.flag-banner{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:10px 13px;margin-bottom:12px;font-size:12px;color:var(--amber-text);line-height:1.55;}
+.flag-banner strong{color:var(--amber-dark);font-weight:500;}
+
+/* Right Panel - Living Document */
+.doc-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0;}
+.doc-toolbar-l{display:flex;align-items:center;gap:6px;}
+.ver-lbl{font-size:11px;color:var(--ink3);}
+.vbadge{font-size:11px;padding:2px 9px;border-radius:99px;border:1px solid var(--line2);color:var(--ink2);cursor:pointer;font-family:var(--sans);}
+.vbadge.on{background:var(--surface);border-color:var(--ink3);color:var(--ink);}
+
+.word-doc-view {
+  background: var(--white); padding: 2.5rem; border: 1px solid var(--line); border-radius: 8px;
+  font-family: var(--serif); font-size: 1.25rem; line-height: 1.6; color: var(--ink);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+  flex: 1; /* Take remaining vertical space */
+  min-height: 0; /* CRITICAL: allows flex child to scroll instead of stretching parent */
+  overflow-y: auto; 
+  outline: none;
+}
+.word-doc-section { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--line); }
+.word-doc-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.word-doc-view h3 { font-family: var(--sans); font-size: 0.85rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink3); margin-bottom: 1rem; }
+.word-doc-view p { margin-bottom: 1rem; }
+.word-doc-view strong { font-weight: 600; }
+.word-doc-view ins { background: var(--green-bg); color: var(--green-text); text-decoration: none; padding: 0.1em 0.2em; border-radius: 3px; }
+.word-doc-view del { background: var(--del-bg); color: var(--del-text); text-decoration: line-through; padding: 0.1em 0.2em; border-radius: 3px; }
+
+/* Interactive Hover Citations */
+.cite-hover {
+  cursor: pointer; color: var(--amber-dark); background: var(--amber-bg);
+  padding: 0 5px; border-radius: 4px; border: 1px solid var(--amber-border);
+  transition: all 0.15s ease; font-family: var(--sans); font-size: 0.75em;
+  vertical-align: middle; font-weight: 500;
+}
+.cite-hover:hover { background: #f5d7a6; }
+
+/* Chat Container */
+.chat-container{display:flex;flex-direction:column;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line);flex-shrink:0;}
+.chat-history{max-height:120px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;}
+.chat-msg{font-size:13px;line-height:1.5;padding:10px 14px;border-radius:10px;max-width:90%;}
+.chat-msg.user{background:var(--surface);color:var(--ink);align-self:flex-end;border-bottom-right-radius:2px;}
+.chat-msg.ai{background:var(--white);border:1px solid var(--line);color:var(--ink);align-self:flex-start;border-bottom-left-radius:2px;}
+.chat-input-wrapper{display:flex;align-items:flex-end;border:1px solid var(--line2);border-radius:20px;padding:8px 14px;background:var(--white);box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom: 12px;}
+.chat-input-wrapper textarea{flex:1;border:none;outline:none;resize:none;min-height:22px;max-height:100px;font-family:var(--sans);font-size:13.5px;color:var(--ink);background:transparent;padding:2px 0;}
+.chat-input-wrapper textarea::placeholder{color:var(--ink3);}
+.chat-send-btn{background:var(--ink);color:var(--white);border:none;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:10px;}
+.chat-send-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;}
+
+.btn-confirm{background:var(--ink);color:var(--white);border:none;border-radius:8px;padding:12px 18px;font-size:14px;font-weight:500;font-family:var(--sans);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.15s; width: 100%; flex-shrink: 0;}
+.btn-confirm:hover{opacity:0.85;}
+
+/* ── SCREEN 3: Email Layout ── */
+.email-draft-container {background: var(--surface); padding: 2rem; overflow-y: auto; display:flex; flex-direction:column; gap:1.5rem;}
+.email-draft {background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 2.5rem; font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--ink); outline: none; border: 1px solid transparent; transition: border 0.2s;}
+.email-draft:focus {border-color: var(--line2);}
+.email-header {border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 1.5rem;}
+.email-header div {margin-bottom: 4px;}
+.email-header strong {font-weight: 500; color: var(--ink2); width: 60px; display: inline-block;}
+
+/* Screen 3 Export Actions */
+.export-actions {display:flex; gap:1rem; flex-shrink:0;}
+.export-card {background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 1.25rem; flex: 1; display:flex; flex-direction: column;}
+.export-card h4 {font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--ink);}
+.export-card p {font-size: 12px; color: var(--ink2); line-height: 1.4; margin-bottom: 1rem; flex: 1;}
+.btn-secondary {background: transparent; color: var(--ink); border: 1px solid var(--line2); border-radius: 6px; padding: 8px 12px; font-size: 12px; font-weight: 500; font-family: var(--sans); cursor: pointer; transition: all 0.15s;}
+.btn-secondary:hover {border-color: var(--ink); background: var(--surface);}
+
+svg.icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px;}
+
+/* ── AGENT PICKER ── */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:8px;width:100%;max-width:600px;margin-top:0.5rem;}
+.agent-card{border:1px solid var(--agent-border);border-radius:10px;padding:12px 14px;cursor:pointer;background:var(--white);transition:all 0.15s;text-align:left;}
+.agent-card:hover{border-color:var(--ink3);background:var(--surface);}
+.agent-card.on{border-color:var(--ink);background:var(--agent-active-bg);color:var(--agent-active-text);}
+.agent-card.on .agent-name{color:var(--white);}
+.agent-card.on .agent-desc{color:rgba(255,255,255,0.65);}
+.agent-name{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;font-family:var(--sans);}
+.agent-desc{font-size:11.5px;color:var(--ink3);line-height:1.45;font-family:var(--sans);}
+.agent-loading{font-size:13px;color:var(--ink3);padding:8px 0;}
+.active-agent-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:99px;border:1px solid var(--line2);color:var(--ink2);background:var(--surface);font-family:var(--sans);}
+
+/* ── AMENDMENT BANNER ── */
+.amendment-banner{background:#fff7ed;border:1px solid #f59e0b;border-radius:10px;padding:11px 14px;margin-bottom:4px;font-family:var(--sans);}
+.amend-label{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;color:#b45309;margin-bottom:4px;}
+.amend-reason{font-size:12.5px;color:#92400e;line-height:1.55;}
+.amend-actions{display:flex;gap:8px;margin-top:10px;}
+.amend-accept{background:#16a34a;color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:background 0.12s;}
+.amend-accept:hover{background:#15803d;}
+.amend-reject{background:transparent;color:#92400e;border:1px solid #f59e0b;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--sans);transition:all 0.12s;}
+.amend-reject:hover{background:#fef3c7;}
+/* Amended section gets a left border so it's easy to spot */
+.word-doc-section.has-amendment{border-left:3px solid #f59e0b;padding-left:12px;}
+
+/* ── SECTION LOADING ── */
+.section-loading{padding:18px 0 4px;text-align:center;color:var(--ink3);font-size:13px;font-family:var(--sans);border-top:1px dashed var(--line);margin-top:12px;}
+.section-loading::before{content:'';display:inline-block;width:10px;height:10px;border:2px solid var(--line2);border-top-color:var(--ink3);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:-1px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── DATE DISCREPANCY BANNER ── */
+.discrepancy-banner{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#991b1b;font-family:var(--sans);line-height:1.5;}
+.discrepancy-banner strong{color:#7f1d1d;}
+
+/* ── PARAGRAPH CITATIONS ── */
+.para-cite{cursor:pointer;color:var(--amber-dark);background:var(--amber-bg);padding:1px 5px;border-radius:4px;border:1px solid var(--amber-border);font-family:var(--sans);font-size:0.78em;font-weight:600;vertical-align:middle;white-space:nowrap;}
+.para-cite:hover{background:#f5d49a;}
+.para-tooltip{position:fixed;background:var(--ink);color:var(--white);padding:9px 13px;border-radius:9px;font-size:12.5px;line-height:1.55;max-width:320px;z-index:9999;pointer-events:none;font-family:var(--sans);box-shadow:0 6px 20px rgba(0,0,0,0.22);display:none;}
+.para-tooltip .tip-num{font-weight:600;color:#fbbf24;font-size:11px;letter-spacing:0.04em;display:block;margin-bottom:3px;}
+.para-tooltip .tip-section{font-size:10.5px;color:rgba(255,255,255,0.5);margin-bottom:4px;display:block;}
+
+/* ── EMAIL SCREEN ── */
+.email-audience-bar{display:flex;align-items:center;gap:8px;padding:12px 0 10px;flex-shrink:0;border-bottom:1px solid var(--line);margin-bottom:12px;}
+.email-aud-lbl{font-size:11px;color:var(--ink3);text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
+.email-body-loading{padding:24px 0;text-align:center;color:var(--ink3);font-size:13px;font-family:var(--sans);}
+.email-body-loading::before{content:'';display:inline-block;width:10px;height:10px;border:2px solid var(--line2);border-top-color:var(--ink3);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:8px;vertical-align:-1px;}
+
+/* ── SECTION HEADER BAR (replaces doc-toolbar) ── */
+.section-header-bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;flex-shrink:0;}
+.section-header-label{font-size:13px;font-weight:500;color:var(--ink);font-family:var(--sans);}
+.section-status-badge{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-text);font-family:var(--sans);display:none;}
+.section-status-badge.visible{display:inline-block;}
+
+/* ── CANVAS PLACEHOLDER ── */
+.canvas-placeholder{padding:48px 24px;text-align:center;color:var(--ink3);font-family:var(--sans);font-size:13px;line-height:1.7;}
+.canvas-placeholder strong{color:var(--ink2);}
+
+/* ── MODE TABS (always visible at bottom of right panel) ── */
+.mode-tabs-bar{display:flex;gap:8px;margin-bottom:10px;flex-shrink:0;}
+.mode-tab{flex:1;background:var(--white);border:1px solid var(--line2);border-radius:8px;padding:9px 6px;font-size:13px;font-weight:500;font-family:var(--sans);color:var(--ink);cursor:pointer;transition:all 0.12s;text-align:center;}
+.mode-tab:hover{border-color:var(--ink3);background:var(--surface);}
+.mode-tab.active{background:var(--ink);color:var(--white);border-color:var(--ink);}
+
+/* ── SELF DRAFT CANVAS ── */
+.draft-canvas{min-height:80px;outline:none;font-family:var(--sans);font-size:1rem;color:var(--ink);}
+.draft-canvas:empty::before{content:attr(data-placeholder);color:var(--ink3);pointer-events:none;}
+
+/* ── AI ADD-ON BUTTON ── */
+.btn-addon{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);border-radius:8px;padding:11px 18px;font-size:13px;font-weight:500;font-family:var(--sans);cursor:pointer;width:100%;flex-shrink:0;margin-bottom:8px;transition:all 0.12s;}
+.btn-addon:hover{background:#c5e8a3;}
+.btn-addon:disabled{opacity:0.6;cursor:default;}
+
+/* ── PARSE LOADING (screen 1 loading state) ── */
+.parse-spinner{display:inline-block;width:11px;height:11px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:7px;vertical-align:-1px;}
+
+/* ── CONFIRMED SECTION TAB ── */
+.sp.confirmed{background:var(--green-bg);border-color:var(--green-border);color:var(--green-text);}
+.sp.flagged{border-color:var(--amber-border);color:var(--amber-text);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="s1">
+  <img src="CoCOunsel new.png" alt="Co-Counsel Logo" class="s1-logo">
+  
+  <div class="s1-box">
+    <textarea class="s1-textarea" id="memoText" placeholder="Paste the text of the legal memo, notes, or case background here..."></textarea>
+    <div class="s1-actions">
+      <label class="s1-attach">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        Attach file
+        <input type="file" style="display:none;" onchange="fileAttached(this)">
+      </label>
+      <button class="s1-begin" id="beginBtn" onclick="startReading()">
+        Begin reading
+        <svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="s1-pills-wrap">
+    <div class="s1-pill-lbl">Who receives the final brief?</div>
+    <div class="s1-pills" id="aud">
+      <div class="pill on" onclick="setPill(this,'aud')">Client</div>
+      <div class="pill" onclick="setPill(this,'aud')">Junior lawyer</div>
+      <div class="pill" onclick="setPill(this,'aud')">Senior attorney</div>
+    </div>
+    <div class="s1-pill-lbl">Legal AI Agent</div>
+    <div class="agent-grid" id="agentGrid">
+      <div class="agent-loading">Loading agents…</div>
+    </div>
+  </div>
+  <div class="s1-privacy">
+    <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    Your memo never leaves your browser
+  </div>
+</div>
+
+<div class="screen" id="s2">
+  <div class="topbar">
+    <div class="tl">
+      <img src="CoCOunsel new.png" alt="Co-Counsel Logo" class="t-logo">
+      <div class="t-matter" contenteditable="true" spellcheck="false">Khan v Acme · Client brief · Employment</div>
+    </div>
+    <div class="tr">
+      <div class="ann-toolbar" id="annToolbar">
+        <div class="ann-color active" style="background:var(--hl-yellow);" onclick="setColor(this, 'var(--hl-yellow)')"></div>
+        <div class="ann-color" style="background:var(--hl-green);" onclick="setColor(this, 'var(--hl-green)')"></div>
+        <div class="ann-color" style="background:var(--hl-pink);" onclick="setColor(this, 'var(--hl-pink)')"></div>
+      </div>
+      <button class="ann-btn" id="btnAnn" onclick="toggleAnnotate()">
+        <svg viewBox="0 0 24 24" class="icon" style="vertical-align: middle;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        Annotate
+      </button>
+      <div class="active-agent-badge" id="activeAgentBadge">Agent</div>
+      <div class="prog-container">
+        <div class="prog-bar"><div class="prog-fill" id="pfill" style="width:25%;"></div></div>
+        <div class="prog-lbl" id="progText">Section 1 of 4</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="body2">
+    <div class="left2" id="leftDoc">
+      <div class="sec-lbl">Sections</div>
+      <div class="sec-nav" id="secNav"></div>
+      <div id="flagBanner" style="display:none;" class="flag-banner"></div>
+      <div id="docContent"></div>
+    </div>
+
+    <div class="right2">
+      <!-- Section header: shows current section name + confirmed badge -->
+      <div class="section-header-bar">
+        <span class="section-header-label" id="sectionHeaderLabel">Select a section</span>
+        <span class="section-status-badge" id="sectionStatusBadge">Confirmed ✓</span>
+      </div>
+
+      <!-- Canvas: shows only the current section's content -->
+      <div class="word-doc-view" id="aiDraftDoc" spellcheck="false">
+        <div class="canvas-placeholder" id="canvasPlaceholder">
+          <strong>Choose a mode below</strong> to analyze this section,<br>or write your own notes using Self Draft.
+        </div>
+      </div>
+
+      <div class="chat-container">
+        <!-- Always-visible mode tabs -->
+        <div class="mode-tabs-bar">
+          <button class="mode-tab" id="tab-summarize" onclick="setMode('summarize')">Summarize</button>
+          <button class="mode-tab" id="tab-analysis" onclick="setMode('analysis')">Analysis</button>
+          <button class="mode-tab" id="tab-draft" onclick="setMode('draft')">Self Draft</button>
+        </div>
+
+        <div class="chat-history" id="chatHistory"></div>
+
+        <div class="chat-input-wrapper">
+          <textarea id="chatInput" rows="1" placeholder="Ask Co·Counsel to edit this section..."></textarea>
+          <button class="chat-send-btn" onclick="sendChat()"><svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
+        </div>
+
+        <button id="addonBtn" class="btn-addon" style="display:none;" onclick="requestAddon()">AI Add-on — suggest additions</button>
+        <button class="btn-confirm" id="sBtnC" onclick="confirmSection()">Confirm section ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="screen" id="s3">
+  <div class="topbar">
+    <div class="tl">
+      <img src="CoCOunsel new.png" alt="Co-Counsel Logo" class="t-logo">
+      <div class="t-matter" contenteditable="true" spellcheck="false">Khan v Acme · Client brief · Employment</div>
+    </div>
+    <div class="tr">
+       </div>
+  </div>
+  <div class="body2">
+    
+    <div class="left2" style="background:var(--surface); overflow-y:auto;">
+       <div class="sec-lbl" style="margin-bottom:1rem;">Confirmed Strategy Document (Your Notes)</div>
+       <div class="word-doc-view" id="s3-attorney-notes" style="font-size: 1.15rem; box-shadow: none; border: 1px solid var(--line); background:var(--white);">
+         </div>
+    </div>
+
+    <div class="email-draft-container right2">
+
+      <div class="email-audience-bar">
+        <span class="email-aud-lbl">Draft for:</span>
+        <div class="pill on" id="s3-aud-client"     onclick="selectEmailAudience(this,'Client')">Client</div>
+        <div class="pill"    id="s3-aud-junior"     onclick="selectEmailAudience(this,'Junior lawyer')">Junior lawyer</div>
+        <div class="pill"    id="s3-aud-senior"     onclick="selectEmailAudience(this,'Senior attorney')">Senior attorney</div>
+      </div>
+
+      <div class="email-draft" contenteditable="false" spellcheck="false" style="flex:1;overflow-y:auto;">
+        <div class="email-header" id="emailHeader" contenteditable="true">
+          <div><strong>To:</strong> <span id="emailTo">Client</span></div>
+          <div><strong>From:</strong> Co-Counsel</div>
+          <div><strong>Date:</strong> <span id="emailDate"></span></div>
+          <div><strong>Re:</strong> <span id="emailRe">Legal Matter</span></div>
+        </div>
+        <div id="emailBody" contenteditable="true" style="margin-top:1rem;">
+          <div class="email-body-loading">Generating draft…</div>
+        </div>
+      </div>
+
+      <div class="export-actions">
+        <div class="export-card">
+          <h4>Copy draft</h4>
+          <p>Paste directly into an email, Word, or Slack.</p>
+          <button class="btn-secondary" onclick="copyEmailDraft()">Copy to clipboard</button>
+        </div>
+        <div class="export-card">
+          <h4>Regenerate</h4>
+          <p>Re-draft from your notes with the same audience.</p>
+          <button class="btn-secondary" onclick="generateEmail(currentEmailAudience)">Regenerate</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="paraTooltip" class="para-tooltip"><span class="tip-num"></span><span class="tip-section"></span><span class="tip-text"></span></div>
+
+<script>
+// ── STATE ──
+const API = 'http://localhost:8001';
+let selectedAgentId = null;
+let selectedAgentName = '';
+let chatMessages = [];
+let liveMode = false;
+let currentEmailAudience = 'Client';
+let modeLoading = false;
+let sectionAnalyzing = false;
+
+// ── DYNAMIC SECTIONS (populated by /api/parse) ────────────────────────────
+// Fallback demo sections shown when no memo is pasted
+const DEMO_SECTIONS = [
+  { label: 'Jurisdiction & Background', paras: [
+    { num: '¶1', text: 'You instruct us in connection with your dismissal by Acme Trading Ltd on 12 March 2026, after three years and two months of continuous service.' },
+    { num: '¶2', text: 'You have continuous service of three years and two months and are therefore a qualifying employee under section 108 of the Employment Rights Act 1996.' }
+  ]},
+  { label: 'Procedural Issues', paras: [
+    { num: '¶3', text: 'On the procedural side, we are concerned about three points. First, the investigation appears to have been conducted by the same manager who chaired the disciplinary hearing.' }
+  ]},
+  { label: 'Merits', paras: [
+    { num: '¶4', text: 'On the merits, your strongest point is that BlueLight Logistics signed a £42,000 contract with Acme on 18 February 2026 — two weeks after the dinner.' },
+    { num: '¶5', text: 'Acme\'s strongest point is paragraph 4.7 of the staff handbook, which requires pre-approval for client entertainment over £500. You did not seek pre-approval.' }
+  ]},
+  { label: 'Compensation & Quantum', paras: [
+    { num: '¶6', text: 'The compensatory award is likely to be modest. You secured alternative employment on 5 May 2026 at a salary £6,400 lower than your Acme package.' }
+  ]}
+];
+
+let SECTIONS = [];
+
+// Per-section state — one entry per SECTIONS[i]
+// { mode, draftHtml, confirmed, confirmedHtml, flags, dateAudit }
+let sectionStates = [];
+
+let cur = 0;
+let paraMap = {};
+
+// ── CITATION PROCESSING ───────────────────────────────────────────────────
+function addCitationHovers(html) {
+  // Parse to DOM, walk text nodes, wrap bare ¶N refs in .para-cite spans
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html;
+  walkAndWrap(wrapper);
+  return wrapper.innerHTML;
+}
+
+function walkAndWrap(node) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    if (!/¶\d+/.test(node.textContent)) return;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    const re = /¶(\d+)/g;
+    let m;
+    const text = node.textContent;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const ref = '¶' + m[1];
+      if (paraMap[ref]) {
+        const span = document.createElement('span');
+        span.className = 'para-cite';
+        span.dataset.para = ref;
+        span.textContent = ref;
+        frag.appendChild(span);
+      } else {
+        frag.appendChild(document.createTextNode(ref));
+      }
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    node.parentNode.replaceChild(frag, node);
+    return;
+  }
+  // Skip already-processed cite spans and script/style
+  if (node.nodeName === 'SCRIPT' || node.nodeName === 'STYLE') return;
+  if (node.classList && (node.classList.contains('para-cite') || node.classList.contains('cite-hover'))) return;
+  Array.from(node.childNodes).forEach(c => walkAndWrap(c));
+}
+
+// ── TOOLTIP ───────────────────────────────────────────────────────────────
+function showParaTooltip(e, paraRef) {
+  const info = paraMap[paraRef];
+  if (!info) return;
+  const tip = document.getElementById('paraTooltip');
+  tip.querySelector('.tip-num').textContent = paraRef;
+  tip.querySelector('.tip-section').textContent = info.section;
+  tip.querySelector('.tip-text').textContent = info.text;
+  tip.style.display = 'block';
+  positionTip(e);
+}
+function positionTip(e) {
+  const tip = document.getElementById('paraTooltip');
+  const x = e.clientX + 16;
+  const y = e.clientY - 12;
+  tip.style.left = Math.min(x, window.innerWidth - tip.offsetWidth - 16) + 'px';
+  tip.style.top  = Math.max(8, Math.min(y, window.innerHeight - tip.offsetHeight - 8)) + 'px';
+}
+function hideParaTooltip() {
+  document.getElementById('paraTooltip').style.display = 'none';
+}
+document.addEventListener('mousemove', e => {
+  if (document.getElementById('paraTooltip').style.display !== 'none') positionTip(e);
+});
+// Event delegation — works for dynamically inserted cite spans anywhere in the doc
+document.addEventListener('mouseover', e => {
+  const cite = e.target.closest('.para-cite');
+  if (cite) showParaTooltip(e, cite.dataset.para);
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest('.para-cite')) hideParaTooltip();
+});
+
+// ── AGENT LOADING ──
+async function loadAgents() {
+  try {
+    const res = await fetch(`${API}/api/agents`);
+    const data = await res.json();
+    renderAgentCards(data.agents);
+  } catch {
+    document.getElementById('agentGrid').innerHTML =
+      '<div class="agent-loading">Could not load agents — is the backend running?</div>';
+  }
+}
+
+function renderAgentCards(agents) {
+  const grid = document.getElementById('agentGrid');
+  grid.innerHTML = agents.map(a => `
+    <div class="agent-card" id="agent-${a.id}" onclick="selectAgent('${a.id}','${escHtml(a.name)}')">
+      <div class="agent-name">${escHtml(a.name)}</div>
+      <div class="agent-desc">${escHtml(a.description)}</div>
+    </div>`).join('');
+  // Default-select the first agent
+  if (agents.length) selectAgent(agents[0].id, agents[0].name);
+}
+
+function selectAgent(id, name) {
+  document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('on'));
+  const card = document.getElementById('agent-' + id);
+  if (card) card.classList.add('on');
+  selectedAgentId = id;
+  selectedAgentName = name;
+  checkBeginReady();
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── HELPERS ──
+function getSelectedPill(groupId) {
+  const activePill = document.querySelector('#' + groupId + ' .pill.on');
+  return activePill ? activePill.textContent.trim() : '';
+}
+
+function checkBeginReady() {
+  const hasText = document.getElementById('memoText').value.trim().length > 10;
+  document.getElementById('beginBtn').classList.toggle('ready', hasText && !!selectedAgentId);
+}
+
+// ── PHASE 1: PARSE MEMO INTO SECTIONS ────────────────────────────────────
+async function startReading() {
+  const memoText = document.getElementById('memoText').value.trim();
+  const btn = document.getElementById('beginBtn');
+
+  if (!selectedAgentId) {
+    alert('Please select a Legal AI Agent first.');
+    return;
+  }
+
+  // Demo mode — no text pasted
+  if (!memoText) {
+    SECTIONS = DEMO_SECTIONS;
+    initParaMap();
+    liveMode = false;
+    goScreen('s2');
+    return;
+  }
+
+  const originalBtnHTML = btn.innerHTML;
+  btn.innerHTML = '<span class="parse-spinner"></span>Reading memo structure…';
+  btn.style.opacity = '0.8';
+  btn.style.pointerEvents = 'none';
+
+  try {
+    const res = await fetch(`${API}/api/parse`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ memo_text: memoText, agent_id: selectedAgentId })
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert('Backend error: ' + (data.detail || res.statusText));
+      return;
+    }
+
+    if (data.status === 'success' && data.sections && data.sections.length) {
+      SECTIONS = data.sections;
+      initParaMap();
+      liveMode = true;
+      goScreen('s2');
+    } else {
+      const msg = data.detail || 'Could not parse memo structure.';
+      const useFallback = confirm(
+        msg + '\n\nWould you like to continue with demo sections instead?\n(Click Cancel to retry.)'
+      );
+      if (useFallback) {
+        SECTIONS = DEMO_SECTIONS;
+        initParaMap();
+        liveMode = false;
+        goScreen('s2');
+      }
+    }
+  } catch (err) {
+    console.error(err);
+    const useFallback = confirm(
+      "Could not connect to the backend.\n\nWould you like to continue with demo sections instead?"
+    );
+    if (useFallback) {
+      SECTIONS = DEMO_SECTIONS;
+      initParaMap();
+      liveMode = false;
+      goScreen('s2');
+    }
+  } finally {
+    btn.innerHTML = originalBtnHTML;
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+  }
+}
+
+function initParaMap() {
+  paraMap = {};
+  SECTIONS.forEach(s => s.paras.forEach(p => { paraMap[p.num] = { text: p.text, section: s.label }; }));
+}
+
+
+function setPill(el, grp) {
+  document.querySelectorAll('#' + grp + ' .pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function hiP(arr) {
+  const paras = document.querySelectorAll('.para');
+  paras.forEach(p => {
+    const num = p.querySelector('.pnum').textContent.trim();
+    if (arr.includes(num)) p.classList.add('highlighted');
+  });
+}
+
+function loP(arr) {
+  const paras = document.querySelectorAll('.para');
+  paras.forEach(p => {
+    const num = p.querySelector('.pnum').textContent.trim();
+    if (arr.includes(num)) p.classList.remove('highlighted');
+  });
+}
+
+let annotateOn = false;
+let curColor = 'var(--hl-yellow)';
+
+function toggleAnnotate() {
+  annotateOn = !annotateOn;
+  document.getElementById('btnAnn').classList.toggle('on', annotateOn);
+  document.getElementById('annToolbar').style.display = annotateOn ? 'flex' : 'none';
+}
+
+function setColor(el, color) {
+  document.querySelectorAll('.ann-color').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  curColor = color;
+}
+
+document.getElementById('docContent').addEventListener('mouseup', function() {
+  if (!annotateOn) return;
+  const sel = window.getSelection();
+  if (!sel.isCollapsed) {
+    const range = sel.getRangeAt(0);
+    const span = document.createElement('span');
+    span.style.backgroundColor = curColor;
+    span.style.borderRadius = '3px';
+    range.surroundContents(span);
+    sel.removeAllRanges(); 
+  }
+});
+
+function fileAttached(inp){
+  if(inp.files.length){
+    document.getElementById('memoText').placeholder = '✓ ' + inp.files[0].name + ' attached';
+    document.getElementById('beginBtn').classList.add('ready');
+  }
+}
+
+// ── FRONTEND REGEX SHIELD ─────────────────────────────────────────────────
+function cleanAiHtml(html) {
+  return (html || '')
+    .replace(/<fact_checklist>[\s\S]*?<\/fact_checklist>/gi, '')
+    .replace(/<date_audit>[\s\S]*?<\/date_audit>/gi, '')
+    .replace(/^[^<]+/, '')
+    .trim();
+}
+
+// ── CONFIRMED DRAFT BUILDER ───────────────────────────────────────────────
+function buildConfirmedDraft() {
+  return SECTIONS
+    .map((_, i) => sectionStates[i]?.confirmedHtml || '')
+    .filter(h => h)
+    .join('\n');
+}
+
+// ── SCREEN NAVIGATION ─────────────────────────────────────────────────────
+function goScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  if (id === 's2') {
+    cur = 0;
+    chatMessages = [];
+    modeLoading = false;
+    sectionAnalyzing = false;
+    // Per-section state
+    sectionStates = SECTIONS.map(() => ({
+      mode: null, draftHtml: '', confirmed: false,
+      confirmedHtml: '', flags: [], dateAudit: null,
+    }));
+    document.getElementById('addonBtn').style.display = 'none';
+    document.getElementById('chatHistory').innerHTML = '';
+    document.getElementById('activeAgentBadge').textContent = selectedAgentName || 'Agent';
+    renderSection(0);
+    renderSectionCanvas(0);
+  }
+
+  if (id === 's3') {
+    // Compile all confirmed sections into the notes panel
+    const allHtml = SECTIONS
+      .map((_, i) => sectionStates[i]?.confirmedHtml || '')
+      .filter(h => h).join('\n');
+    document.getElementById('s3-attorney-notes').innerHTML = allHtml || document.getElementById('aiDraftDoc').innerHTML;
+    document.getElementById('emailDate').textContent =
+      new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const s1Audience = getSelectedPill('aud');
+    currentEmailAudience = s1Audience || 'Client';
+    syncEmailAudPills(currentEmailAudience);
+    generateEmail(currentEmailAudience);
+  }
+}
+
+// Bootstrap
+loadAgents();
+
+// ── LEFT PANEL ────────────────────────────────────────────────────────────
+function renderSection(idx) {
+  cur = idx;
+  const s = SECTIONS[idx];
+
+  // Section nav — all tabs clickable for free navigation
+  let navHtml = '';
+  for (let i = 0; i < SECTIONS.length; i++) {
+    const st = sectionStates[i] || {};
+    let cls = i === cur ? 'active' : st.confirmed ? 'confirmed' : '';
+    if (!st.confirmed && (st.flags?.length > 0 || st.dateAudit)) cls += ' flagged';
+    navHtml += `<div class="sp ${cls}" onclick="navigateSection(${i})">${escHtml(SECTIONS[i].label)}</div>`;
+  }
+  document.getElementById('secNav').innerHTML = navHtml;
+
+  // Flag banner
+  const fb = document.getElementById('flagBanner');
+  const st = sectionStates[idx] || {};
+  const lines = [];
+  if (st.dateAudit) {
+    const lastLine = st.dateAudit.split('\n').pop();
+    lines.push(`<span style="color:#991b1b"><strong>⚠ Date Discrepancy:</strong> ${escHtml(lastLine)}</span>`);
+  }
+  (st.flags || []).forEach(r => lines.push(`<strong>AI cross-section note:</strong> ${escHtml(r)}`));
+  fb.innerHTML = lines.join('<br><br>');
+  fb.style.display = lines.length ? 'block' : 'none';
+
+  // Paragraphs
+  document.getElementById('docContent').innerHTML =
+    s.paras.map(p => `<div class="para"><div class="pnum">${p.num}</div><div class="ptxt">${p.text}</div></div>`).join('');
+
+  // Progress
+  const confirmedCount = sectionStates.filter(st => st.confirmed).length;
+  document.getElementById('progText').innerText = `${confirmedCount} of ${SECTIONS.length} confirmed`;
+  document.getElementById('pfill').style.width = ((confirmedCount / SECTIONS.length) * 100) + '%';
+}
+
+// ── RIGHT PANEL CANVAS ────────────────────────────────────────────────────
+function renderSectionCanvas(idx) {
+  const st = sectionStates[idx] || {};
+  const canvas = document.getElementById('aiDraftDoc');
+
+  // Header
+  document.getElementById('sectionHeaderLabel').textContent = SECTIONS[idx].label;
+  const badge = document.getElementById('sectionStatusBadge');
+  badge.classList.toggle('visible', !!st.confirmed);
+
+  // Mode tabs
+  ['tab-summarize', 'tab-analysis', 'tab-draft'].forEach(id => {
+    document.getElementById(id)?.classList.remove('active');
+  });
+  if (st.mode) document.getElementById('tab-' + st.mode)?.classList.add('active');
+
+  // Canvas content
+  if (st.draftHtml) {
+    canvas.innerHTML = st.draftHtml;
+    canvas.contentEditable = st.mode === 'draft' ? 'true' : 'false';
+  } else {
+    canvas.innerHTML = '<div class="canvas-placeholder"><strong>Choose a mode below</strong> to analyze this section,<br>or write your own notes using Self Draft.</div>';
+    canvas.contentEditable = 'false';
+  }
+
+  document.getElementById('addonBtn').style.display = st.mode === 'draft' ? 'block' : 'none';
+  chatMessages = [];
+  document.getElementById('chatHistory').innerHTML = '';
+  updateConfirmBtn();
+}
+
+// ── FREE NAVIGATION ───────────────────────────────────────────────────────
+function navigateSection(idx) {
+  if (idx === cur) return;
+  autoSaveCurrent();
+  cur = idx;
+  renderSection(idx);
+  renderSectionCanvas(idx);
+}
+
+function autoSaveCurrent() {
+  const canvas = document.getElementById('aiDraftDoc');
+  if (canvas && sectionStates[cur]) {
+    sectionStates[cur].draftHtml = canvas.innerHTML.includes('canvas-placeholder') ? '' : canvas.innerHTML;
+  }
+}
+
+// ── MODE SELECTION ────────────────────────────────────────────────────────
+async function setMode(mode) {
+  if (modeLoading) return;
+
+  sectionStates[cur].mode = mode;
+
+  ['tab-summarize', 'tab-analysis', 'tab-draft'].forEach(id =>
+    document.getElementById(id)?.classList.remove('active'));
+  document.getElementById('tab-' + mode)?.classList.add('active');
+
+  const canvas = document.getElementById('aiDraftDoc');
+  const audience = getSelectedPill('aud');
+  const sectionText = SECTIONS[cur].paras.map(p => `${p.num}: ${p.text}`).join('\n');
+
+  if (mode === 'draft') {
+    canvas.innerHTML = '';
+    canvas.contentEditable = 'true';
+    canvas.setAttribute('data-placeholder', `Write your notes for "${SECTIONS[cur].label}" here…`);
+    canvas.focus();
+    sectionStates[cur].draftHtml = '';
+    document.getElementById('addonBtn').style.display = 'block';
+    updateConfirmBtn();
+    return;
+  }
+
+  document.getElementById('addonBtn').style.display = 'none';
+  canvas.contentEditable = 'false';
+  canvas.innerHTML = `<div class="section-loading">${mode === 'summarize' ? 'Summarizing' : 'Analyzing'} "${SECTIONS[cur].label}" with ${selectedAgentName}…</div>`;
+
+  modeLoading = true;
+  sectionAnalyzing = true;
+  updateConfirmBtn();
+
+  try {
+    let rawHtml = '';
+
+    if (!liveMode) {
+      rawHtml = `<div class="word-doc-section"><h3>${escHtml(SECTIONS[cur].label)}</h3><p><em>Demo mode — paste a real memo on the start screen to get AI analysis.</em></p></div>`;
+    } else if (mode === 'summarize') {
+      const res = await fetch(`${API}/api/summarize`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ section_label: SECTIONS[cur].label, section_text: sectionText,
+          agent_id: selectedAgentId || 'employment', audience })
+      });
+      const data = await res.json();
+      if (res.ok && data.summary_html) {
+        rawHtml = `<div class="word-doc-section"><h3>${escHtml(SECTIONS[cur].label)} — Summary</h3>${data.summary_html}</div>`;
+      }
+    } else {
+      const res = await fetch(`${API}/api/section`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          section_label: SECTIONS[cur].label, section_text: sectionText, section_index: cur,
+          confirmed_draft: buildConfirmedDraft(),
+          agent_id: selectedAgentId || 'employment', audience,
+          scope_paras: SECTIONS[cur].paras.map(p => p.num)
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.section_html) {
+        if (data.date_audit) {
+          sectionStates[cur].dateAudit = data.date_audit;
+          renderSection(cur);
+        }
+        // Store amendments as flags on the target sections
+        if (data.amendments?.length) {
+          data.amendments.forEach(a => {
+            const ti = SECTIONS.findIndex(s =>
+              s.label.toLowerCase().includes(a.section_label.toLowerCase()));
+            if (ti >= 0 && ti !== cur) {
+              sectionStates[ti].flags.push(a.reason);
+            }
+          });
+          renderSection(cur); // refresh nav to show warning badges
+        }
+        rawHtml = data.section_html;
+      }
+    }
+
+    const cleaned = addCitationHovers(cleanAiHtml(rawHtml));
+    canvas.innerHTML = cleaned || `<div class="word-doc-section"><h3>${escHtml(SECTIONS[cur].label)}</h3><p>No content returned. Try again.</p></div>`;
+    sectionStates[cur].draftHtml = canvas.innerHTML;
+
+  } catch {
+    canvas.innerHTML = `<div class="word-doc-section"><h3>${escHtml(SECTIONS[cur].label)}</h3><p>Could not connect to backend.</p></div>`;
+    sectionStates[cur].draftHtml = canvas.innerHTML;
+  } finally {
+    modeLoading = false;
+    sectionAnalyzing = false;
+    updateConfirmBtn();
+  }
+}
+
+// ── CONFIRM SECTION ───────────────────────────────────────────────────────
+function confirmSection() {
+  const canvas = document.getElementById('aiDraftDoc');
+  // Accept any ins/del present
+  canvas.querySelectorAll('del').forEach(d => d.remove());
+  canvas.querySelectorAll('ins').forEach(ins => {
+    while (ins.firstChild) ins.parentNode.insertBefore(ins.firstChild, ins);
+    ins.remove();
+  });
+
+  sectionStates[cur].confirmed = true;
+  sectionStates[cur].confirmedHtml = canvas.innerHTML;
+  sectionStates[cur].draftHtml = canvas.innerHTML;
+
+  // Flash green
+  const doc = document.getElementById('aiDraftDoc');
+  doc.style.backgroundColor = 'var(--green-bg)';
+  setTimeout(() => { doc.style.backgroundColor = 'var(--white)'; }, 300);
+
+  renderSection(cur); // update nav badge
+
+  const badge = document.getElementById('sectionStatusBadge');
+  badge.classList.add('visible');
+
+  // Navigate to next unconfirmed section, or go to screen 3 if all done
+  const allDone = sectionStates.every(s => s.confirmed);
+  if (allDone) {
+    document.getElementById('pfill').style.width = '100%';
+    goScreen('s3');
+    return;
+  }
+  const nextIdx = sectionStates.findIndex((s, i) => !s.confirmed && i > cur);
+  if (nextIdx >= 0) navigateSection(nextIdx);
+  else updateConfirmBtn();
+}
+
+// ── CONFIRM BUTTON STATE ──────────────────────────────────────────────────
+function updateConfirmBtn() {
+  const btn = document.getElementById('sBtnC');
+  const st = sectionStates[cur] || {};
+  if (modeLoading || sectionAnalyzing) {
+    btn.disabled = true;
+    btn.textContent = `${st.mode === 'summarize' ? 'Summarizing' : 'Analyzing'} "${SECTIONS[cur]?.label}"…`;
+  } else if (!st.mode) {
+    btn.disabled = true;
+    btn.textContent = 'Choose a mode above to begin';
+  } else if (st.confirmed) {
+    btn.disabled = false;
+    btn.textContent = 'Re-confirm section';
+  } else {
+    btn.disabled = false;
+    btn.textContent = 'Confirm section ✓';
+  }
+}
+
+// ── AI ADD-ON ─────────────────────────────────────────────────────────────
+async function requestAddon() {
+  const canvas = document.getElementById('aiDraftDoc');
+  if (!canvas) return;
+  const btn = document.getElementById('addonBtn');
+  btn.textContent = 'AI thinking…';
+  btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/api/addon`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        attorney_draft: canvas.innerHTML,
+        confirmed_notes: buildConfirmedDraft(),
+        agent_id: selectedAgentId || 'employment',
+        audience: getSelectedPill('aud')
+      })
+    });
+    const data = await res.json();
+    if (res.ok && data.addon_html) {
+      canvas.innerHTML = cleanAiHtml(data.addon_html) || data.addon_html;
+      sectionStates[cur].draftHtml = canvas.innerHTML;
+    }
+  } catch { /* keep draft */ } finally {
+    btn.textContent = 'AI Add-on — suggest additions';
+    btn.disabled = false;
+  }
+}
+
+// ── EMAIL GENERATION ─────────────────────────────────────────────────────
+const EMAIL_TO = { 'Client': 'Client', 'Junior lawyer': 'Associate (briefing note)', 'Senior attorney': 'Supervising Partner' };
+
+async function generateEmail(audience) {
+  const body = document.getElementById('emailBody');
+  body.innerHTML = '<div class="email-body-loading">Drafting for ' + escHtml(audience) + '…</div>';
+  document.getElementById('emailTo').textContent = EMAIL_TO[audience] || audience;
+
+  const notes = document.getElementById('s3-attorney-notes').innerHTML;
+  if (!notes.trim() || !liveMode) {
+    body.innerHTML = '<p><em>Paste a memo on the first screen and confirm at least one section to generate a draft here.</em></p>';
+    return;
+  }
+  try {
+    const res = await fetch(`${API}/api/email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ confirmed_notes: notes, audience, agent_id: selectedAgentId || 'employment' })
+    });
+    const data = await res.json();
+    if (res.ok && data.email_html) {
+      body.innerHTML = data.email_html;
+      body.contentEditable = 'true';
+    } else {
+      body.innerHTML = '<p>Error: ' + escHtml(data.detail || 'Could not generate draft.') + '</p>';
+    }
+  } catch {
+    body.innerHTML = '<p>Could not connect to backend. Is uvicorn running?</p>';
+  }
+}
+
+function selectEmailAudience(el, audience) {
+  currentEmailAudience = audience;
+  syncEmailAudPills(audience);
+  generateEmail(audience);
+}
+
+function syncEmailAudPills(audience) {
+  const map = { 'Client': 's3-aud-client', 'Junior lawyer': 's3-aud-junior', 'Senior attorney': 's3-aud-senior' };
+  Object.values(map).forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('on'); });
+  const target = document.getElementById(map[audience]);
+  if (target) target.classList.add('on');
+}
+
+function copyEmailDraft() {
+  const header = document.getElementById('emailHeader').innerText;
+  const body   = document.getElementById('emailBody').innerText;
+  navigator.clipboard.writeText(header + '\n\n' + body)
+    .then(() => alert('Copied to clipboard!'))
+    .catch(() => alert('Copy failed — please select and copy manually.'));
+}
+
+// ── CHAT ──────────────────────────────────────────────────────────────────
+function addChatMsg(role, html, id) {
+  const historyEl = document.getElementById('chatHistory');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + role;
+  if (id) div.id = id;
+  div.innerHTML = html;
+  historyEl.appendChild(div);
+  historyEl.scrollTop = historyEl.scrollHeight;
+  return div;
+}
+
+async function sendChat() {
+  const inputEl = document.getElementById('chatInput');
+  const text = inputEl.value.trim();
+  if (!text) return;
+  addChatMsg('user', escHtml(text));
+  chatMessages.push({ role: 'user', content: text });
+  inputEl.value = '';
+  const loadingId = 'loading-' + Date.now();
+  addChatMsg('ai', '<em>Thinking…</em>', loadingId);
+  try {
+    const historyToSend = chatMessages.slice(0, -1).map(m => ({ role: m.role, content: m.content }));
+    const res = await fetch(`${API}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        agent_id: selectedAgentId || 'employment',
+        audience: getSelectedPill('aud'),
+        current_draft: document.getElementById('aiDraftDoc').innerHTML,
+        history: historyToSend
+      })
+    });
+    const data = await res.json();
+    document.getElementById(loadingId)?.remove();
+    if (res.ok && data.reply) {
+      addChatMsg('ai', addCitationHovers(data.reply));
+      chatMessages.push({ role: 'assistant', content: data.reply });
+    } else {
+      addChatMsg('ai', 'Error: ' + escHtml(data.detail || 'Could not get response.'));
+    }
+  } catch {
+    document.getElementById(loadingId)?.remove();
+    addChatMsg('ai', 'Could not connect to backend. Is uvicorn running?');
+  }
+}
+
+document.getElementById('chatInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+});
+document.getElementById('memoText').addEventListener('input', checkBeginReady);
+</script>
+</body>
+</html>
