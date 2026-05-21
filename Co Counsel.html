@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Co&middot;Counsel — Legal Memo Reading Companion</title>
+<title>Draft Partner — Legal Memo Reading Companion</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -26,7 +26,7 @@ html,body{height:100%;font-family:var(--sans);color:var(--ink);background:var(--
 
 /* ── SCREEN 1 ── */
 #s1{flex-direction:column;align-items:center;padding:6rem 1rem 2rem;}
-.s1-logo{display:block;height:52px;width:auto;margin-bottom:3rem;margin-top:1rem;}
+.s1-logo{display:block;height:80px;width:auto;margin-bottom:3rem;margin-top:1rem;}
 .s1-box{width:100%;max-width:600px;background:var(--surface);border-radius:14px;padding:1.1rem 1.1rem 0.85rem;}
 .s1-textarea{width:100%;background:transparent;border:none;outline:none;font-size:15px;font-family:var(--sans);color:var(--ink);resize:none;min-height:120px;line-height:1.7;}
 .s1-textarea::placeholder{color:var(--ink3);}
@@ -47,7 +47,7 @@ html,body{height:100%;font-family:var(--sans);color:var(--ink);background:var(--
 #s2, #s3 {flex-direction:column;}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--line);background:var(--white);flex-shrink:0;}
 .tl{display:flex;align-items:center;gap:12px;}
-.t-logo{display:block;height:24px;width:auto;}
+.t-logo{display:block;height:56px;width:auto;}
 .t-matter{font-size:13px;color:var(--ink);font-weight:500;outline:none;border-bottom:1px dashed transparent;transition:border 0.2s;}
 .t-matter:hover, .t-matter:focus{border-bottom:1px dashed var(--ink3);}
 .tr{display:flex;align-items:center;gap:12px;}
@@ -133,11 +133,26 @@ html,body{height:100%;font-family:var(--sans);color:var(--ink);background:var(--
 
 /* ── SCREEN 3: Email Layout ── */
 .email-draft-container {background: var(--surface); padding: 2rem; overflow-y: auto; display:flex; flex-direction:column; gap:1.5rem;}
-.email-draft {background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 2.5rem; font-family: var(--sans); font-size: 14px; line-height: 1.6; color: var(--ink); outline: none; border: 1px solid transparent; transition: border 0.2s;}
+.email-draft {background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); padding: 2.5rem; font-family: var(--sans); font-size: 14px; line-height: 1.75; color: var(--ink); outline: none; border: 1px solid transparent; transition: border 0.2s;}
 .email-draft:focus {border-color: var(--line2);}
 .email-header {border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 1.5rem;}
 .email-header div {margin-bottom: 4px;}
 .email-header strong {font-weight: 500; color: var(--ink2); width: 60px; display: inline-block;}
+/* Email body typography */
+.email-draft p { margin-bottom: 1.1rem; }
+.email-draft p:last-child { margin-bottom: 0; }
+.email-draft ul, .email-draft ol { margin: 0.5rem 0 1.1rem 1.5rem; }
+.email-draft li { margin-bottom: 0.4rem; }
+.email-draft strong { font-weight: 600; }
+/* Finalized draft (Screen 3 left panel) */
+.final-section { margin-bottom: 2.75rem; }
+.final-section:last-child { margin-bottom: 0; }
+.final-section-title { font-family: var(--sans); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink3); padding-bottom: 0.6rem; border-bottom: 1px solid var(--line); margin-bottom: 1.25rem; }
+.final-section p { margin-bottom: 0.9rem; line-height: 1.7; }
+.final-section p:last-child { margin-bottom: 0; }
+.final-section ul, .final-section ol { margin: 0.4rem 0 0.9rem 1.5rem; }
+.final-section li { margin-bottom: 0.35rem; }
+.final-section h3 { display: none; } /* section AI sub-headings already shown in final-section-title */
 
 /* Screen 3 Export Actions */
 .export-actions {display:flex; gap:1rem; flex-shrink:0;}
@@ -197,7 +212,9 @@ svg.icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;str
 
 /* ── SECTION HEADER BAR (replaces doc-toolbar) ── */
 .section-header-bar{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;flex-shrink:0;}
-.section-header-label{font-size:13px;font-weight:500;color:var(--ink);font-family:var(--sans);}
+.section-header-label{font-size:13px;font-weight:500;color:var(--ink);font-family:var(--sans);cursor:text;border-radius:4px;padding:1px 4px;transition:background 0.1s;}
+.section-header-label:hover{background:var(--line);}
+.section-header-label:focus{outline:none;background:var(--white);border:1px solid var(--ink);padding:1px 3px;}
 .section-status-badge{font-size:11px;padding:3px 10px;border-radius:99px;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green-text);font-family:var(--sans);display:none;}
 .section-status-badge.visible{display:inline-block;}
 
@@ -220,12 +237,59 @@ svg.icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;str
 .btn-addon:hover{background:#c5e8a3;}
 .btn-addon:disabled{opacity:0.6;cursor:default;}
 
+/* ── CANVAS EDITABLE FONT ── */
+.word-doc-view[contenteditable="true"] {
+  font-family: var(--serif); font-size: 1.25rem; line-height: 1.6; color: var(--ink);
+  cursor: text;
+}
+.word-doc-view[contenteditable="true"]:focus { outline: none; }
+
+/* ── FORMAT TOOLBAR ── */
+.format-toolbar{display:flex;align-items:center;gap:2px;padding:5px 10px;border:1px solid var(--line2);border-radius:8px;background:var(--surface);flex-shrink:0;margin-bottom:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;}
+.format-toolbar::-webkit-scrollbar{display:none;}
+.fmt-select{font-family:var(--sans);font-size:12px;border:1px solid var(--line2);border-radius:5px;padding:2px 5px;background:var(--white);color:var(--ink);cursor:pointer;height:26px;max-width:110px;}
+.fmt-btn{background:transparent;border:1px solid transparent;border-radius:5px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--ink);transition:all 0.1s;flex-shrink:0;padding:0;}
+.fmt-btn:hover{background:var(--surface);border-color:var(--line2);}
+.fmt-btn.active{background:var(--ink);color:var(--white);}
+.fmt-divider{width:1px;height:16px;background:var(--line2);margin:0 2px;flex-shrink:0;}
+.fmt-size{display:flex;align-items:center;gap:1px;}
+.fmt-size-num{font-size:12px;font-family:var(--sans);min-width:22px;text-align:center;color:var(--ink);}
+.fmt-color-wrap{position:relative;width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid transparent;transition:all 0.1s;flex-shrink:0;}
+.fmt-color-wrap:hover{background:var(--surface);border-color:var(--line2);}
+.fmt-color-swatch{display:flex;flex-direction:column;align-items:center;gap:1px;pointer-events:none;}
+.fmt-color-letter{font-weight:700;font-size:13px;line-height:1;}
+.fmt-color-bar{height:3px;width:14px;border-radius:2px;}
+.fmt-color-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+
+/* ── AI CHANGES BAR ── */
+.changes-bar{display:none;align-items:center;justify-content:space-between;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;padding:6px 12px;margin-bottom:6px;flex-shrink:0;}
+.changes-bar.visible{display:flex;}
+.changes-bar-label{font-size:12.5px;color:var(--amber-dark);font-family:var(--sans);font-weight:500;}
+.changes-bar-btns{display:flex;gap:7px;}
+.changes-accept{background:var(--green-bg);color:var(--green-text);border:1px solid var(--green-border);border-radius:6px;padding:4px 12px;font-size:12px;font-family:var(--sans);font-weight:500;cursor:pointer;}
+.changes-reject{background:var(--del-bg);color:var(--del-text);border:1px solid #f5c6c6;border-radius:6px;padding:4px 12px;font-size:12px;font-family:var(--sans);font-weight:500;cursor:pointer;}
+
+/* ── CONFIRM MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity 0.18s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-card{background:var(--white);border-radius:14px;padding:2rem 2rem 1.5rem;max-width:400px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.18);transform:translateY(8px);transition:transform 0.18s;}
+.modal-overlay.open .modal-card{transform:translateY(0);}
+.modal-card h3{font-family:var(--sans);font-size:1rem;font-weight:600;margin-bottom:0.5rem;color:var(--ink);}
+.modal-card p{font-family:var(--sans);font-size:0.88rem;color:var(--ink2);line-height:1.55;margin-bottom:1.5rem;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;}
+.modal-cancel{background:transparent;border:1px solid var(--line2);border-radius:8px;padding:9px 20px;font-size:13px;font-weight:500;font-family:var(--sans);color:var(--ink2);cursor:pointer;transition:all 0.12s;}
+.modal-cancel:hover{border-color:var(--ink3);color:var(--ink);}
+.modal-confirm{background:var(--ink);border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:500;font-family:var(--sans);color:var(--white);cursor:pointer;transition:opacity 0.12s;}
+.modal-confirm:hover{opacity:0.85;}
+
 /* ── PARSE LOADING (screen 1 loading state) ── */
 .parse-spinner{display:inline-block;width:11px;height:11px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;margin-right:7px;vertical-align:-1px;}
 
 /* ── CONFIRMED SECTION TAB ── */
 .sp.confirmed{background:var(--green-bg);border-color:var(--green-border);color:var(--green-text);}
+.sp.has-draft{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber-text);}
 .sp.flagged{border-color:var(--amber-border);color:var(--amber-text);}
+.sp.editing{border-color:var(--ink)!important;background:var(--white)!important;color:var(--ink)!important;border-radius:6px!important;outline:none;cursor:text;}
 </style>
 </head>
 <body>
@@ -300,8 +364,66 @@ svg.icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;str
     <div class="right2">
       <!-- Section header: shows current section name + confirmed badge -->
       <div class="section-header-bar">
-        <span class="section-header-label" id="sectionHeaderLabel">Select a section</span>
+        <span class="section-header-label" id="sectionHeaderLabel" contenteditable="false"
+          title="Click to rename this section"
+          onclick="startEditHeaderLabel()"
+          onblur="saveHeaderLabel()"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}if(event.key==='Escape'){this.textContent=SECTIONS[cur]?.label||'';this.blur();}">Select a section</span>
         <span class="section-status-badge" id="sectionStatusBadge">Confirmed ✓</span>
+      </div>
+
+      <!-- Format toolbar -->
+      <div class="format-toolbar" id="formatToolbar">
+        <select class="fmt-select" id="fmtStyle" onchange="execFmt('formatBlock', this.value)" title="Text style">
+          <option value="p">Normal text</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+        </select>
+        <div class="fmt-divider"></div>
+        <button class="fmt-btn" id="fmtBold" onclick="execFmt('bold')" title="Bold"><b>B</b></button>
+        <button class="fmt-btn" id="fmtItalic" onclick="execFmt('italic')" title="Italic"><i>I</i></button>
+        <button class="fmt-btn" id="fmtUnderline" onclick="execFmt('underline')" title="Underline"><u>U</u></button>
+        <div class="fmt-divider"></div>
+        <div class="fmt-size">
+          <button class="fmt-btn" onclick="fmtFontSize(-1)" title="Decrease size">−</button>
+          <span class="fmt-size-num" id="fmtSizeNum">—</span>
+          <button class="fmt-btn" onclick="fmtFontSize(1)" title="Increase size">+</button>
+        </div>
+        <div class="fmt-divider"></div>
+        <div class="fmt-color-wrap" title="Text color">
+          <div class="fmt-color-swatch">
+            <span class="fmt-color-letter">A</span>
+            <div class="fmt-color-bar" id="fmtColorBar" style="background:#0f0f0f;"></div>
+          </div>
+          <input type="color" class="fmt-color-input" id="fmtColorInput" value="#0f0f0f" oninput="applyFmtColor(this.value)">
+        </div>
+        <div class="fmt-color-wrap" title="Highlight">
+          <div class="fmt-color-swatch">
+            <span class="fmt-color-letter" style="font-size:11px;">HL</span>
+            <div class="fmt-color-bar" id="fmtHlBar" style="background:#fef08a;"></div>
+          </div>
+          <input type="color" class="fmt-color-input" id="fmtHlInput" value="#fef08a" oninput="applyFmtHighlight(this.value)">
+        </div>
+        <div class="fmt-divider"></div>
+        <button class="fmt-btn" onclick="execFmt('justifyLeft')" title="Align left">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><rect x="1" y="2" width="14" height="1.5" rx="0.5"/><rect x="1" y="5.5" width="9" height="1.5" rx="0.5"/><rect x="1" y="9" width="14" height="1.5" rx="0.5"/><rect x="1" y="12.5" width="7" height="1.5" rx="0.5"/></svg>
+        </button>
+        <button class="fmt-btn" onclick="execFmt('justifyCenter')" title="Center">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><rect x="1" y="2" width="14" height="1.5" rx="0.5"/><rect x="3.5" y="5.5" width="9" height="1.5" rx="0.5"/><rect x="1" y="9" width="14" height="1.5" rx="0.5"/><rect x="4.5" y="12.5" width="7" height="1.5" rx="0.5"/></svg>
+        </button>
+        <button class="fmt-btn" onclick="execFmt('justifyRight')" title="Align right">
+          <svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor"><rect x="1" y="2" width="14" height="1.5" rx="0.5"/><rect x="6" y="5.5" width="9" height="1.5" rx="0.5"/><rect x="1" y="9" width="14" height="1.5" rx="0.5"/><rect x="8" y="12.5" width="7" height="1.5" rx="0.5"/></svg>
+        </button>
+      </div>
+
+      <!-- Changes bar: visible when AI has suggested <ins>/<del> edits -->
+      <div class="changes-bar" id="changesBar">
+        <span class="changes-bar-label">✦ AI suggested changes</span>
+        <div class="changes-bar-btns">
+          <button class="changes-accept" onclick="acceptAllChanges()">Accept all</button>
+          <button class="changes-reject" onclick="rejectAllChanges()">Reject all</button>
+        </div>
       </div>
 
       <!-- Canvas: shows only the current section's content -->
@@ -322,7 +444,7 @@ svg.icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;str
         <div class="chat-history" id="chatHistory"></div>
 
         <div class="chat-input-wrapper">
-          <textarea id="chatInput" rows="1" placeholder="Ask Co·Counsel to edit this section..."></textarea>
+          <textarea id="chatInput" rows="1" placeholder="Ask Draft Partner to edit this section..."></textarea>
           <button class="chat-send-btn" onclick="sendChat()"><svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></button>
         </div>
 
@@ -362,7 +484,7 @@ svg.icon{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;str
       <div class="email-draft" contenteditable="false" spellcheck="false" style="flex:1;overflow-y:auto;">
         <div class="email-header" id="emailHeader" contenteditable="true">
           <div><strong>To:</strong> <span id="emailTo">Client</span></div>
-          <div><strong>From:</strong> Co-Counsel</div>
+          <div><strong>From:</strong> Draft Partner</div>
           <div><strong>Date:</strong> <span id="emailDate"></span></div>
           <div><strong>Re:</strong> <span id="emailRe">Legal Matter</span></div>
         </div>
@@ -687,6 +809,8 @@ function fileAttached(inp){
 // ── FRONTEND REGEX SHIELD ─────────────────────────────────────────────────
 function cleanAiHtml(html) {
   return (html || '')
+    .replace(/^```(?:html)?\s*\n?/i, '')   // strip opening markdown fence
+    .replace(/\n?```\s*$/i, '')              // strip closing markdown fence
     .replace(/<fact_checklist>[\s\S]*?<\/fact_checklist>/gi, '')
     .replace(/<date_audit>[\s\S]*?<\/date_audit>/gi, '')
     .replace(/^[^<]+/, '')
@@ -724,9 +848,13 @@ function goScreen(id) {
   }
 
   if (id === 's3') {
-    // Compile all confirmed sections into the notes panel
+    // Compile confirmed sections into finalized draft with labeled section dividers
     const allHtml = SECTIONS
-      .map((_, i) => sectionStates[i]?.confirmedHtml || '')
+      .map((s, i) => {
+        const html = sectionStates[i]?.confirmedHtml;
+        if (!html) return '';
+        return `<div class="final-section"><div class="final-section-title">${escHtml(s.label)}</div>${html}</div>`;
+      })
       .filter(h => h).join('\n');
     document.getElementById('s3-attorney-notes').innerHTML = allHtml || document.getElementById('aiDraftDoc').innerHTML;
     document.getElementById('emailDate').textContent =
@@ -750,9 +878,9 @@ function renderSection(idx) {
   let navHtml = '';
   for (let i = 0; i < SECTIONS.length; i++) {
     const st = sectionStates[i] || {};
-    let cls = i === cur ? 'active' : st.confirmed ? 'confirmed' : '';
+    let cls = i === cur ? 'active' : st.confirmed ? 'confirmed' : (st.draftHtml ? 'has-draft' : '');
     if (!st.confirmed && (st.flags?.length > 0 || st.dateAudit)) cls += ' flagged';
-    navHtml += `<div class="sp ${cls}" onclick="navigateSection(${i})">${escHtml(SECTIONS[i].label)}</div>`;
+    navHtml += `<div class="sp ${cls}" id="sp-${i}" onclick="navPillClick(event,${i})" ondblclick="editSectionLabel(event,${i})" title="Double-click to rename">${escHtml(SECTIONS[i].label)}</div>`;
   }
   document.getElementById('secNav').innerHTML = navHtml;
 
@@ -794,10 +922,10 @@ function renderSectionCanvas(idx) {
   });
   if (st.mode) document.getElementById('tab-' + st.mode)?.classList.add('active');
 
-  // Canvas content
+  // Canvas content — always editable so attorneys can annotate AI output directly
   if (st.draftHtml) {
     canvas.innerHTML = st.draftHtml;
-    canvas.contentEditable = st.mode === 'draft' ? 'true' : 'false';
+    canvas.contentEditable = 'true';
   } else {
     canvas.innerHTML = '<div class="canvas-placeholder"><strong>Choose a mode below</strong> to analyze this section,<br>or write your own notes using Self Draft.</div>';
     canvas.contentEditable = 'false';
@@ -806,6 +934,7 @@ function renderSectionCanvas(idx) {
   document.getElementById('addonBtn').style.display = st.mode === 'draft' ? 'block' : 'none';
   chatMessages = [];
   document.getElementById('chatHistory').innerHTML = '';
+  updateChangesBar();
   updateConfirmBtn();
 }
 
@@ -825,9 +954,157 @@ function autoSaveCurrent() {
   }
 }
 
+// ── SECTION LABEL EDITING ─────────────────────────────────────────────────
+let _editingNavPill = false;
+
+function navPillClick(e, i) {
+  if (_editingNavPill) return; // ignore click during label edit
+  navigateSection(i);
+}
+
+function editSectionLabel(e, i) {
+  e.stopPropagation();
+  const pill = document.getElementById('sp-' + i);
+  if (!pill) return;
+  _editingNavPill = true;
+  pill.classList.add('editing');
+  pill.contentEditable = 'true';
+  pill.focus();
+  // Select all text
+  const range = document.createRange();
+  range.selectNodeContents(pill);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+
+  const save = () => {
+    const newLabel = pill.textContent.trim();
+    if (newLabel) {
+      SECTIONS[i].label = newLabel;
+      // Keep pill text as-is (already updated)
+    } else {
+      pill.textContent = SECTIONS[i].label; // restore if empty
+    }
+    pill.contentEditable = 'false';
+    pill.classList.remove('editing');
+    _editingNavPill = false;
+    // Update the section header label if it's the current section
+    if (i === cur) document.getElementById('sectionHeaderLabel').textContent = SECTIONS[i].label;
+  };
+
+  pill.addEventListener('blur', save, { once: true });
+  pill.addEventListener('keydown', ke => {
+    if (ke.key === 'Enter') { ke.preventDefault(); pill.blur(); }
+    if (ke.key === 'Escape') { pill.textContent = SECTIONS[i].label; pill.blur(); }
+  }, { once: true });
+}
+
+function startEditHeaderLabel() {
+  const el = document.getElementById('sectionHeaderLabel');
+  if (!SECTIONS[cur]) return;
+  el.contentEditable = 'true';
+  el.focus();
+}
+
+function saveHeaderLabel() {
+  const el = document.getElementById('sectionHeaderLabel');
+  el.contentEditable = 'false';
+  const newLabel = el.textContent.trim();
+  if (newLabel && SECTIONS[cur]) {
+    SECTIONS[cur].label = newLabel;
+    renderSection(cur); // refresh nav pill text too
+  } else if (SECTIONS[cur]) {
+    el.textContent = SECTIONS[cur].label; // restore
+  }
+}
+
+// ── FORMAT TOOLBAR ────────────────────────────────────────────────────────
+let _fmtPx = 20; // default matches word-doc-view font-size (1.25rem)
+const _fmtSizes = [10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 48];
+
+function execFmt(cmd, val) {
+  const canvas = document.getElementById('aiDraftDoc');
+  canvas.focus();
+  document.execCommand(cmd, false, val || null);
+  updateFmtState();
+}
+
+function fmtFontSize(delta) {
+  const canvas = document.getElementById('aiDraftDoc');
+  canvas.focus();
+  const idx = _fmtSizes.indexOf(_fmtPx);
+  const newIdx = Math.max(0, Math.min(_fmtSizes.length - 1, idx + delta));
+  _fmtPx = _fmtSizes[newIdx];
+  // execCommand fontSize only accepts 1–7; use a workaround via span
+  document.execCommand('fontSize', false, '7');
+  canvas.querySelectorAll('font[size="7"]').forEach(el => {
+    el.removeAttribute('size');
+    el.style.fontSize = _fmtPx + 'px';
+  });
+  document.getElementById('fmtSizeNum').textContent = _fmtPx;
+}
+
+function applyFmtColor(hex) {
+  const canvas = document.getElementById('aiDraftDoc');
+  canvas.focus();
+  document.execCommand('foreColor', false, hex);
+  document.getElementById('fmtColorBar').style.background = hex;
+}
+
+function applyFmtHighlight(hex) {
+  const canvas = document.getElementById('aiDraftDoc');
+  canvas.focus();
+  document.execCommand('hiliteColor', false, hex);
+  document.getElementById('fmtHlBar').style.background = hex;
+}
+
+function updateFmtState() {
+  try {
+    ['Bold','Italic','Underline'].forEach(cmd => {
+      const el = document.getElementById('fmt' + cmd);
+      if (el) el.classList.toggle('active', document.queryCommandState(cmd.toLowerCase()));
+    });
+  } catch(e) {}
+}
+
+document.addEventListener('selectionchange', () => {
+  if (document.activeElement === document.getElementById('aiDraftDoc')) updateFmtState();
+});
+
+// ── AI CHANGES BAR ────────────────────────────────────────────────────────
+function updateChangesBar() {
+  const canvas = document.getElementById('aiDraftDoc');
+  const has = canvas.querySelector('ins, del') !== null;
+  document.getElementById('changesBar').classList.toggle('visible', has);
+}
+
+function acceptAllChanges() {
+  const canvas = document.getElementById('aiDraftDoc');
+  canvas.querySelectorAll('del').forEach(d => d.remove());
+  canvas.querySelectorAll('ins').forEach(ins => {
+    while (ins.firstChild) ins.parentNode.insertBefore(ins.firstChild, ins);
+    ins.remove();
+  });
+  autoSaveCurrent();
+  updateChangesBar();
+}
+
+function rejectAllChanges() {
+  const canvas = document.getElementById('aiDraftDoc');
+  canvas.querySelectorAll('ins').forEach(ins => ins.remove());
+  canvas.querySelectorAll('del').forEach(del => {
+    while (del.firstChild) del.parentNode.insertBefore(del.firstChild, del);
+    del.remove();
+  });
+  autoSaveCurrent();
+  updateChangesBar();
+}
+
 // ── MODE SELECTION ────────────────────────────────────────────────────────
 async function setMode(mode) {
   if (modeLoading) return;
+
+  // Capture whatever the attorney has typed before we read draftHtml
+  autoSaveCurrent();
 
   sectionStates[cur].mode = mode;
 
@@ -840,18 +1117,63 @@ async function setMode(mode) {
   const sectionText = SECTIONS[cur].paras.map(p => `${p.num}: ${p.text}`).join('\n');
 
   if (mode === 'draft') {
-    canvas.innerHTML = '';
+    // Restore whatever the attorney had written (never clear it)
+    canvas.innerHTML = sectionStates[cur].draftHtml || '';
     canvas.contentEditable = 'true';
     canvas.setAttribute('data-placeholder', `Write your notes for "${SECTIONS[cur].label}" here…`);
     canvas.focus();
-    sectionStates[cur].draftHtml = '';
     document.getElementById('addonBtn').style.display = 'block';
     updateConfirmBtn();
     return;
   }
 
   document.getElementById('addonBtn').style.display = 'none';
-  canvas.contentEditable = 'false';
+  canvas.contentEditable = 'false'; // temporarily lock during load
+
+  // If the attorney already has a draft, enhance it rather than replace it
+  const existingDraft = sectionStates[cur].draftHtml;
+  if (liveMode && existingDraft && existingDraft.trim()) {
+    canvas.innerHTML = `<div class="section-loading">Enhancing your draft for "${SECTIONS[cur].label}"…</div>`;
+    modeLoading = true;
+    sectionAnalyzing = true;
+    updateConfirmBtn();
+    try {
+      const res = await fetch(`${API}/api/enhance`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          attorney_draft: existingDraft,
+          section_text: sectionText,
+          section_label: SECTIONS[cur].label,
+          agent_id: selectedAgentId || 'employment',
+          audience,
+          mode
+        })
+      });
+      const data = await res.json();
+      const rawHtml = res.ok && data.enhanced_html ? data.enhanced_html : existingDraft;
+      // Strip fences/internal tags but keep attorney's leading plain text
+      const safeHtml = (rawHtml || existingDraft)
+        .replace(/^```(?:html)?\s*\n?/i, '')
+        .replace(/\n?```\s*$/i, '')
+        .replace(/<fact_checklist>[\s\S]*?<\/fact_checklist>/gi, '')
+        .replace(/<date_audit>[\s\S]*?<\/date_audit>/gi, '')
+        .trim();
+      canvas.innerHTML = addCitationHovers(safeHtml) || existingDraft;
+      sectionStates[cur].draftHtml = canvas.innerHTML;
+    } catch {
+      canvas.innerHTML = existingDraft;
+      sectionStates[cur].draftHtml = existingDraft;
+    } finally {
+      canvas.contentEditable = 'true';
+      updateChangesBar();
+      modeLoading = false;
+      sectionAnalyzing = false;
+      updateConfirmBtn();
+    }
+    return;
+  }
+
   canvas.innerHTML = `<div class="section-loading">${mode === 'summarize' ? 'Summarizing' : 'Analyzing'} "${SECTIONS[cur].label}" with ${selectedAgentName}…</div>`;
 
   modeLoading = true;
@@ -914,6 +1236,9 @@ async function setMode(mode) {
     canvas.innerHTML = `<div class="word-doc-section"><h3>${escHtml(SECTIONS[cur].label)}</h3><p>Could not connect to backend.</p></div>`;
     sectionStates[cur].draftHtml = canvas.innerHTML;
   } finally {
+    canvas.contentEditable = 'true';
+    updateChangesBar();
+    renderSection(cur); // update nav pill color (yellow = has draft)
     modeLoading = false;
     sectionAnalyzing = false;
     updateConfirmBtn();
@@ -922,8 +1247,29 @@ async function setMode(mode) {
 
 // ── CONFIRM SECTION ───────────────────────────────────────────────────────
 function confirmSection() {
+  // First save any live edits the attorney made
+  autoSaveCurrent();
   const canvas = document.getElementById('aiDraftDoc');
-  // Accept any ins/del present
+  if (!canvas.innerHTML || canvas.innerHTML.includes('canvas-placeholder') || canvas.innerHTML.includes('section-loading')) return;
+
+  // Show the confirm modal
+  document.getElementById('confirmModalLabel').textContent = `"${SECTIONS[cur].label}"`;
+  document.getElementById('confirmModal').classList.add('open');
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('open');
+}
+
+function handleModalBackdrop(e) {
+  if (e.target === document.getElementById('confirmModal')) closeConfirmModal();
+}
+
+function doConfirmSection() {
+  closeConfirmModal();
+  const canvas = document.getElementById('aiDraftDoc');
+
+  // Accept tracked changes: remove <del> content, unwrap <ins> content
   canvas.querySelectorAll('del').forEach(d => d.remove());
   canvas.querySelectorAll('ins').forEach(ins => {
     while (ins.firstChild) ins.parentNode.insertBefore(ins.firstChild, ins);
@@ -935,14 +1281,11 @@ function confirmSection() {
   sectionStates[cur].draftHtml = canvas.innerHTML;
 
   // Flash green
-  const doc = document.getElementById('aiDraftDoc');
-  doc.style.backgroundColor = 'var(--green-bg)';
-  setTimeout(() => { doc.style.backgroundColor = 'var(--white)'; }, 300);
+  canvas.style.backgroundColor = 'var(--green-bg)';
+  setTimeout(() => { canvas.style.backgroundColor = ''; }, 350);
 
-  renderSection(cur); // update nav badge
-
-  const badge = document.getElementById('sectionStatusBadge');
-  badge.classList.add('visible');
+  renderSection(cur);
+  document.getElementById('sectionStatusBadge').classList.add('visible');
 
   // Navigate to next unconfirmed section, or go to screen 3 if all done
   const allDone = sectionStates.every(s => s.confirmed);
@@ -1025,7 +1368,11 @@ async function generateEmail(audience) {
     });
     const data = await res.json();
     if (res.ok && data.email_html) {
-      body.innerHTML = data.email_html;
+      const emailHtml = (data.email_html || '')
+        .replace(/^```(?:html)?\s*\n?/i, '')
+        .replace(/\n?```\s*$/i, '')
+        .trim();
+      body.innerHTML = emailHtml;
       body.contentEditable = 'true';
     } else {
       body.innerHTML = '<p>Error: ' + escHtml(data.detail || 'Could not generate draft.') + '</p>';
@@ -1108,6 +1455,21 @@ document.getElementById('chatInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
 });
 document.getElementById('memoText').addEventListener('input', checkBeginReady);
+
+// Set default paragraph separator so Enter key creates <p> tags in contentEditable
+try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch(e) {}
 </script>
+
+<!-- ── CONFIRM SECTION MODAL ── -->
+<div class="modal-overlay" id="confirmModal" onclick="handleModalBackdrop(event)">
+  <div class="modal-card">
+    <h3>Confirm this section?</h3>
+    <p>Your analysis for <strong id="confirmModalLabel"></strong> will be locked in and used as context when the AI analyzes the sections ahead.</p>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeConfirmModal()">Cancel</button>
+      <button class="modal-confirm" onclick="doConfirmSection()">Confirm ✓</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

@@ -15,13 +15,14 @@ from plugins import (
     get_email_draft_system,
     get_summary_system,
     get_addon_system,
+    get_enhance_system,
     get_parse_system,
     parse_section_response,
 )
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
-app = FastAPI(title="Co-Counsel API", version="2.0")
+app = FastAPI(title="Draft Partner API", version="2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -73,6 +74,15 @@ class AddonRequest(BaseModel):
     confirmed_notes: str   # accumulated confirmed analysis for context
     agent_id: str
     audience: str
+
+
+class EnhanceRequest(BaseModel):
+    attorney_draft: str    # existing HTML/text the attorney wrote
+    section_text: str      # source section paragraphs
+    section_label: str
+    agent_id: str
+    audience: str
+    mode: str              # "summarize" | "analysis"
 
 
 class EmailRequest(BaseModel):
@@ -312,6 +322,33 @@ async def ai_addon(request: AddonRequest):
             }],
         )
         return {"status": "success", "addon_html": response.content[0].text}
+    except Exception as e:
+        _handle_anthropic_error(e)
+
+
+@app.post("/api/enhance")
+async def enhance_draft(request: EnhanceRequest):
+    """
+    Enhance the attorney's existing draft with AI additions using <ins> tags.
+    The attorney's text is preserved verbatim; AI content is wrapped in <ins>.
+    """
+    try:
+        system = get_enhance_system(request.agent_id, request.audience, request.mode)
+        response = await client.messages.create(
+            model="claude-sonnet-4-5",
+            max_tokens=1200,
+            system=system,
+            messages=[{
+                "role": "user",
+                "content": (
+                    f"Section: {request.section_label}\n\n"
+                    f"Source text:\n{request.section_text}\n\n"
+                    f"Attorney's existing draft (preserve exactly):\n{request.attorney_draft}\n\n"
+                    "Enhance the draft with <ins> additions. Return the complete HTML."
+                ),
+            }],
+        )
+        return {"status": "success", "enhanced_html": response.content[0].text}
     except Exception as e:
         _handle_anthropic_error(e)
 
